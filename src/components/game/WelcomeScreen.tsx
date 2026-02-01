@@ -1,12 +1,13 @@
-import { Play, Sparkles } from "lucide-react";
+import { Play, Sparkles, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-new.png";
 
 interface WelcomeScreenProps {
   onStart: () => void;
+  onSettings: () => void;
 }
 
-const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
+const WelcomeScreen = ({ onStart, onSettings }: WelcomeScreenProps) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/10 to-game-pink/20 flex flex-col items-center justify-center p-6">
       {/* Floating sparkles background */}
@@ -25,6 +26,16 @@ const WelcomeScreen = ({ onStart }: WelcomeScreenProps) => {
           />
         ))}
       </div>
+
+      {/* Settings Button */}
+      <Button
+        onClick={onSettings}
+        variant="outline"
+        size="icon"
+        className="absolute top-6 right-6 rounded-full"
+      >
+        <Settings className="w-5 h-5" />
+      </Button>
 
       {/* Logo */}
       <div className="relative animate-bounce-in">

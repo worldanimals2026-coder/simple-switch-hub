@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GameCard from "@/components/game/GameCard";
 import GameHeader from "@/components/game/GameHeader";
 import WinModal from "@/components/game/WinModal";
 import AdBanner from "@/components/game/AdBanner";
 import WelcomeScreen from "@/components/game/WelcomeScreen";
+import SettingsScreen from "@/components/game/SettingsScreen";
 import { useMemoryGame } from "@/hooks/useMemoryGame";
 import { useGameSounds } from "@/hooks/useGameSounds";
+import { useGameSettings } from "@/contexts/GameSettingsContext";
+
+type Screen = "welcome" | "game" | "settings";
 
 const Index = () => {
-  const [gameStarted, setGameStarted] = useState(false);
+  const [screen, setScreen] = useState<Screen>("welcome");
   const { playButtonSound } = useGameSounds();
+  const { settings } = useGameSettings();
 
   const {
     cards,
@@ -17,29 +22,47 @@ const Index = () => {
     score,
     bestScore,
     isWon,
+    isLost,
     isNewBest,
+    timeLeft,
+    timerMode,
     handleCardClick,
     restartGame,
     shareScore,
   } = useMemoryGame();
 
   const handleStart = () => {
-    playButtonSound();
-    setGameStarted(true);
+    if (settings.soundEnabled) playButtonSound();
+    restartGame();
+    setScreen("game");
   };
 
   const handleRestart = () => {
-    playButtonSound();
+    if (settings.soundEnabled) playButtonSound();
     restartGame();
   };
 
   const handlePlayAgain = () => {
-    playButtonSound();
+    if (settings.soundEnabled) playButtonSound();
     restartGame();
   };
 
-  if (!gameStarted) {
-    return <WelcomeScreen onStart={handleStart} />;
+  const handleSettings = () => {
+    if (settings.soundEnabled) playButtonSound();
+    setScreen("settings");
+  };
+
+  const handleBackFromSettings = () => {
+    if (settings.soundEnabled) playButtonSound();
+    setScreen("welcome");
+  };
+
+  if (screen === "settings") {
+    return <SettingsScreen onBack={handleBackFromSettings} />;
+  }
+
+  if (screen === "welcome") {
+    return <WelcomeScreen onStart={handleStart} onSettings={handleSettings} />;
   }
 
   return (
@@ -53,7 +76,10 @@ const Index = () => {
           score={score}
           moves={moves}
           bestScore={bestScore}
+          timeLeft={timeLeft}
+          timerMode={timerMode}
           onRestart={handleRestart}
+          onSettings={handleSettings}
         />
 
         {/* Game Grid */}
@@ -73,12 +99,15 @@ const Index = () => {
         {/* Bottom Ad Banner */}
         <AdBanner position="bottom" />
 
-        {/* Win Modal */}
+        {/* Win/Lose Modal */}
         <WinModal
-          isOpen={isWon}
+          isOpen={isWon || isLost}
           score={score}
           moves={moves}
           isNewBest={isNewBest}
+          timeLeft={timeLeft}
+          timerMode={timerMode}
+          isLost={isLost}
           onPlayAgain={handlePlayAgain}
           onShare={shareScore}
         />

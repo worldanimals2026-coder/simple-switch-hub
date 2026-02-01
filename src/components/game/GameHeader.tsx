@@ -1,15 +1,28 @@
-import { Trophy, RotateCcw, Clock, Zap } from "lucide-react";
+import { Trophy, RotateCcw, Clock, Zap, Settings, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-new.png";
 
 interface GameHeaderProps {
   score: number;
   moves: number;
   bestScore: number;
+  timeLeft?: number;
+  timerMode?: boolean;
   onRestart: () => void;
+  onSettings: () => void;
 }
 
-const GameHeader = ({ score, moves, bestScore, onRestart }: GameHeaderProps) => {
+const GameHeader = ({ 
+  score, 
+  moves, 
+  bestScore, 
+  timeLeft, 
+  timerMode, 
+  onRestart, 
+  onSettings 
+}: GameHeaderProps) => {
+  const isLowTime = timerMode && timeLeft !== undefined && timeLeft <= 10;
+
   return (
     <div className="w-full max-w-md mx-auto mb-6">
       <div className="flex items-center justify-between mb-4">
@@ -19,26 +32,50 @@ const GameHeader = ({ score, moves, bestScore, onRestart }: GameHeaderProps) => 
             MemoSpark
           </h1>
         </div>
-        <Button
-          onClick={onRestart}
-          variant="outline"
-          size="icon"
-          className="rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
-        >
-          <RotateCcw className="w-5 h-5" />
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={onSettings}
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+          >
+            <Settings className="w-5 h-5" />
+          </Button>
+          <Button
+            onClick={onRestart}
+            variant="outline"
+            size="icon"
+            className="rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
+          >
+            <RotateCcw className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
 
       <div className="flex items-center justify-between gap-2 p-4 bg-card rounded-2xl shadow-lg border">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-game-yellow/20 rounded-xl">
-            <Zap className="w-5 h-5 text-game-orange" />
+        {timerMode && timeLeft !== undefined ? (
+          <div className="flex items-center gap-2">
+            <div className={`p-2 rounded-xl ${isLowTime ? "bg-game-red/20 animate-pulse" : "bg-game-orange/20"}`}>
+              <Timer className={`w-5 h-5 ${isLowTime ? "text-game-red" : "text-game-orange"}`} />
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Time</p>
+              <p className={`text-xl font-bold ${isLowTime ? "text-game-red" : "text-foreground"}`}>
+                {timeLeft}s
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Score</p>
-            <p className="text-xl font-bold text-foreground">{score}</p>
+        ) : (
+          <div className="flex items-center gap-2">
+            <div className="p-2 bg-game-yellow/20 rounded-xl">
+              <Zap className="w-5 h-5 text-game-orange" />
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Score</p>
+              <p className="text-xl font-bold text-foreground">{score}</p>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="flex items-center gap-2">
           <div className="p-2 bg-game-blue/20 rounded-xl">
