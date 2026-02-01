@@ -1,10 +1,16 @@
+import { useState } from "react";
 import GameCard from "@/components/game/GameCard";
 import GameHeader from "@/components/game/GameHeader";
 import WinModal from "@/components/game/WinModal";
 import AdBanner from "@/components/game/AdBanner";
+import WelcomeScreen from "@/components/game/WelcomeScreen";
 import { useMemoryGame } from "@/hooks/useMemoryGame";
+import { useGameSounds } from "@/hooks/useGameSounds";
 
 const Index = () => {
+  const [gameStarted, setGameStarted] = useState(false);
+  const { playButtonSound } = useGameSounds();
+
   const {
     cards,
     moves,
@@ -17,6 +23,25 @@ const Index = () => {
     shareScore,
   } = useMemoryGame();
 
+  const handleStart = () => {
+    playButtonSound();
+    setGameStarted(true);
+  };
+
+  const handleRestart = () => {
+    playButtonSound();
+    restartGame();
+  };
+
+  const handlePlayAgain = () => {
+    playButtonSound();
+    restartGame();
+  };
+
+  if (!gameStarted) {
+    return <WelcomeScreen onStart={handleStart} />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-game-pink/10 p-4 pb-20">
       <div className="max-w-lg mx-auto pt-4">
@@ -28,7 +53,7 @@ const Index = () => {
           score={score}
           moves={moves}
           bestScore={bestScore}
-          onRestart={restartGame}
+          onRestart={handleRestart}
         />
 
         {/* Game Grid */}
@@ -54,7 +79,7 @@ const Index = () => {
           score={score}
           moves={moves}
           isNewBest={isNewBest}
-          onPlayAgain={restartGame}
+          onPlayAgain={handlePlayAgain}
           onShare={shareScore}
         />
       </div>
