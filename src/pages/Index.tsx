@@ -66,25 +66,29 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-gradient-to-br from-background via-primary/5 to-game-pink/10 p-3 pb-16 flex flex-col safe-area-inset">
-      <div className="w-full max-w-sm mx-auto flex-1 flex flex-col">
-        {/* Top Ad Banner */}
-        <AdBanner position="top" />
+    <div className="min-h-[100dvh] bg-gradient-to-br from-background via-primary/5 to-game-pink/10 flex flex-col safe-area-inset">
+      <div className="w-full max-w-sm mx-auto flex flex-col h-[100dvh] p-3">
+        {/* Top Ad Banner - Fixed height */}
+        <div className="flex-shrink-0">
+          <AdBanner position="top" />
+        </div>
 
-        {/* Game Header */}
-        <GameHeader
-          score={score}
-          moves={moves}
-          bestScore={bestScore}
-          timeLeft={timeLeft}
-          timerMode={timerMode}
-          onRestart={handleRestart}
-          onSettings={handleSettings}
-        />
+        {/* Game Header - Fixed height */}
+        <div className="flex-shrink-0">
+          <GameHeader
+            score={score}
+            moves={moves}
+            bestScore={bestScore}
+            timeLeft={timeLeft}
+            timerMode={timerMode}
+            onRestart={handleRestart}
+            onSettings={handleSettings}
+          />
+        </div>
 
-        {/* Game Grid - optimized for mobile */}
-        <div className="flex-1 flex items-center justify-center">
-          <div className="grid grid-cols-4 gap-2 p-3 bg-card/50 backdrop-blur-sm rounded-2xl shadow-xl border w-full aspect-square max-h-[65vh]">
+        {/* Game Grid - Takes remaining space */}
+        <div className="flex-1 min-h-0 flex items-center justify-center py-2">
+          <div className="grid grid-cols-4 gap-2 p-3 bg-card/50 backdrop-blur-sm rounded-2xl shadow-xl border w-full h-full max-w-[min(100%,calc(100vh-280px))] aspect-square mx-auto">
             {cards.map((card) => (
               <GameCard
                 key={card.id}
@@ -98,8 +102,10 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Bottom Ad Banner */}
-        <AdBanner position="bottom" />
+        {/* Bottom Ad Banner - Fixed height */}
+        <div className="flex-shrink-0 pb-2">
+          <AdBanner position="bottom" />
+        </div>
 
         {/* Win/Lose Modal */}
         <WinModal

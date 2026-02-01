@@ -49,45 +49,45 @@ const SettingsScreen = ({ onBack }: SettingsScreenProps) => {
   const themePacks = getThemePacks();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/10 to-game-pink/20 p-6">
-      <div className="max-w-md mx-auto">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-background via-primary/10 to-game-pink/20 safe-area-inset">
+      <div className="max-w-sm mx-auto p-4 pb-8">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-3 mb-6">
           <Button
             onClick={onBack}
             variant="outline"
             size="icon"
-            className="rounded-full"
+            className="rounded-full h-9 w-9 flex-shrink-0"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-4 h-4" />
           </Button>
           <div className="flex items-center gap-2">
-            <img src={logo} alt="MemoSpark" className="w-10 h-10" />
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-game-pink to-accent bg-clip-text text-transparent">
+            <img src={logo} alt="MemoSpark" className="w-8 h-8" />
+            <h1 className="text-xl font-bold bg-gradient-to-r from-primary via-game-pink to-accent bg-clip-text text-transparent">
               Settings
             </h1>
           </div>
         </div>
 
         {/* Coins Display */}
-        <div className="flex items-center justify-center gap-2 mb-6 p-3 bg-game-yellow/20 rounded-2xl">
-          <Coins className="w-6 h-6 text-game-yellow" />
-          <span className="text-xl font-bold text-game-yellow">{settings.totalCoins}</span>
-          <span className="text-muted-foreground">coins</span>
+        <div className="flex items-center justify-center gap-2 mb-4 p-2.5 bg-game-yellow/20 rounded-xl">
+          <Coins className="w-5 h-5 text-game-yellow" />
+          <span className="text-lg font-bold text-game-yellow">{settings.totalCoins}</span>
+          <span className="text-sm text-muted-foreground">coins</span>
         </div>
 
         {/* Sound Settings */}
-        <div className="bg-card rounded-2xl p-6 shadow-lg border mb-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+        <div className="bg-card rounded-xl p-4 shadow-lg border mb-4">
+          <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
             {settings.soundEnabled ? (
-              <Volume2 className="w-5 h-5 text-primary" />
+              <Volume2 className="w-4 h-4 text-primary" />
             ) : (
-              <VolumeX className="w-5 h-5 text-muted-foreground" />
+              <VolumeX className="w-4 h-4 text-muted-foreground" />
             )}
             Sound
           </h2>
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Sound Effects</span>
+            <span className="text-sm text-muted-foreground">Sound Effects</span>
             <Switch
               checked={settings.soundEnabled}
               onCheckedChange={handleToggleSound}
@@ -96,21 +96,21 @@ const SettingsScreen = ({ onBack }: SettingsScreenProps) => {
         </div>
 
         {/* Timer Mode */}
-        <div className="bg-card rounded-2xl p-6 shadow-lg border mb-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Timer className="w-5 h-5 text-game-orange" />
+        <div className="bg-card rounded-xl p-4 shadow-lg border mb-4">
+          <h2 className="text-base font-semibold mb-3 flex items-center gap-2">
+            <Timer className="w-4 h-4 text-game-orange" />
             Timer Mode
           </h2>
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-muted-foreground">Enable Timer</span>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm text-muted-foreground">Enable Timer</span>
             <Switch
               checked={settings.timerMode}
               onCheckedChange={toggleTimerMode}
             />
           </div>
           {settings.timerMode && (
-            <div className="space-y-3">
-              <span className="text-sm text-muted-foreground">Duration</span>
+            <div className="space-y-2">
+              <span className="text-xs text-muted-foreground">Duration</span>
               <div className="flex gap-2">
                 {[30, 60, 90, 120].map((duration) => (
                   <Button
@@ -118,7 +118,7 @@ const SettingsScreen = ({ onBack }: SettingsScreenProps) => {
                     variant={settings.timerDuration === duration ? "default" : "outline"}
                     size="sm"
                     onClick={() => setTimerDuration(duration)}
-                    className="flex-1"
+                    className="flex-1 h-8 text-xs"
                   >
                     {duration}s
                   </Button>
@@ -129,9 +129,9 @@ const SettingsScreen = ({ onBack }: SettingsScreenProps) => {
         </div>
 
         {/* Theme Packs */}
-        <div className="bg-card rounded-2xl p-6 shadow-lg border">
-          <h2 className="text-lg font-semibold mb-4">🎨 Theme Packs</h2>
-          <div className="grid grid-cols-2 gap-3">
+        <div className="bg-card rounded-xl p-4 shadow-lg border">
+          <h2 className="text-base font-semibold mb-3">🎨 Theme Packs</h2>
+          <div className="grid grid-cols-2 gap-2">
             {themePacks.map((theme) => {
               const isSelected = settings.currentTheme === theme.id;
               const isLocked = !theme.unlocked;
@@ -142,7 +142,7 @@ const SettingsScreen = ({ onBack }: SettingsScreenProps) => {
                   key={theme.id}
                   onClick={() => handleThemeSelect(theme.id)}
                   disabled={isLocked && !canAfford}
-                  className={`relative p-4 rounded-xl border-2 transition-all ${
+                  className={`relative p-3 rounded-lg border-2 transition-all touch-manipulation ${
                     isSelected
                       ? "border-primary bg-primary/10 shadow-lg"
                       : isLocked
@@ -151,23 +151,23 @@ const SettingsScreen = ({ onBack }: SettingsScreenProps) => {
                   }`}
                 >
                   {isSelected && (
-                    <div className="absolute top-2 right-2 bg-primary rounded-full p-1">
-                      <Check className="w-3 h-3 text-primary-foreground" />
+                    <div className="absolute top-1.5 right-1.5 bg-primary rounded-full p-0.5">
+                      <Check className="w-2.5 h-2.5 text-primary-foreground" />
                     </div>
                   )}
                   {isLocked && (
-                    <div className="absolute top-2 right-2 bg-muted-foreground rounded-full p-1">
-                      <Lock className="w-3 h-3 text-background" />
+                    <div className="absolute top-1.5 right-1.5 bg-muted-foreground rounded-full p-0.5">
+                      <Lock className="w-2.5 h-2.5 text-background" />
                     </div>
                   )}
-                  <div className="text-3xl mb-2">{theme.icon}</div>
-                  <div className="font-medium text-sm">{theme.name}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
+                  <div className="text-2xl mb-1">{theme.icon}</div>
+                  <div className="font-medium text-xs">{theme.name}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">
                     {theme.emojis.slice(0, 4).join(" ")}
                   </div>
                   {isLocked && (
-                    <div className="mt-2 flex items-center justify-center gap-1 text-xs">
-                      <Coins className="w-3 h-3 text-game-yellow" />
+                    <div className="mt-1.5 flex items-center justify-center gap-1 text-[10px]">
+                      <Coins className="w-2.5 h-2.5 text-game-yellow" />
                       <span className={canAfford ? "text-game-green" : "text-muted-foreground"}>
                         {theme.unlockCost}
                       </span>
