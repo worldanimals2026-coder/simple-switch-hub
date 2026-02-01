@@ -11,7 +11,7 @@ interface GameCardProps {
 const GameCard = ({ emoji, isFlipped, isMatched, onClick, colorClass }: GameCardProps) => {
   return (
     <div
-      className="perspective-1000 cursor-pointer"
+      className="perspective-1000 cursor-pointer touch-manipulation"
       onClick={onClick}
     >
       <div
@@ -28,31 +28,31 @@ const GameCard = ({ emoji, isFlipped, isMatched, onClick, colorClass }: GameCard
         {/* Card Back */}
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl flex items-center justify-center backface-hidden",
+            "absolute inset-0 rounded-xl flex items-center justify-center backface-hidden",
             "bg-gradient-to-br from-primary via-game-pink to-accent",
-            "shadow-lg hover:shadow-xl transition-shadow duration-300",
-            "border-4 border-white/30",
+            "shadow-lg active:shadow-md transition-shadow duration-300",
+            "border-2 border-white/30",
             !isFlipped && "animate-float"
           )}
           style={{ backfaceVisibility: "hidden" }}
         >
-          <span className="text-4xl md:text-5xl">❓</span>
+          <span className="text-2xl sm:text-3xl md:text-4xl select-none">❓</span>
         </div>
 
         {/* Card Front */}
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl flex items-center justify-center",
-            "shadow-lg border-4",
+            "absolute inset-0 rounded-xl flex items-center justify-center",
+            "shadow-lg border-2",
             colorClass,
-            isMatched && "ring-4 ring-game-green ring-offset-2"
+            isMatched && "ring-2 ring-game-green ring-offset-1"
           )}
           style={{
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
           }}
         >
-          <span className="text-4xl md:text-5xl">{emoji}</span>
+          <span className="text-2xl sm:text-3xl md:text-4xl select-none">{emoji}</span>
         </div>
       </div>
     </div>
