@@ -90,7 +90,30 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
+  html, body {
     @apply bg-background text-foreground;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Safe area for mobile devices with notches */
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+@layer utilities {
+  /* Prevent text selection on game elements */
+  .select-none {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Better touch handling */
+  .touch-manipulation {
+    touch-action: manipulation;
   }
 }

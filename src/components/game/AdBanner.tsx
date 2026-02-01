@@ -11,13 +11,13 @@ const AdBanner = ({ className, position }: AdBannerProps) => {
   return (
     <div
       className={cn(
-        "w-full h-14 bg-muted/50 flex items-center justify-center rounded-lg border border-dashed border-muted-foreground/30",
-        position === "top" ? "mb-4" : "mt-4",
+        "w-full h-12 bg-muted/50 flex items-center justify-center rounded-lg border border-dashed border-muted-foreground/30 flex-shrink-0",
+        position === "top" ? "mb-2" : "mt-2",
         className
       )}
     >
       <p className="text-xs text-muted-foreground">
-        📢 Ad Space - AdMob Banner
+        📢 Ad Space
       </p>
     </div>
   );
