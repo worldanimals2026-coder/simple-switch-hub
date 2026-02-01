@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useGameSounds } from "./useGameSounds";
 
 interface Card {
   id: number;
@@ -50,11 +51,14 @@ export const useMemoryGame = () => {
   const [isWon, setIsWon] = useState(false);
   const [isNewBest, setIsNewBest] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  const { playFlipSound, playMatchSound, playMismatchSound, playWinSound } = useGameSounds();
+  const winSoundPlayedRef = useRef(false);
 
   // Initialize game
   useEffect(() => {
     initGame();
-    const saved = localStorage.getItem("memoryGameBestScore");
+    const saved = localStorage.getItem("memoSparkBestScore");
     if (saved) setBestScore(parseInt(saved));
   }, []);
 
@@ -66,6 +70,7 @@ export const useMemoryGame = () => {
     setIsWon(false);
     setIsNewBest(false);
     setIsProcessing(false);
+    winSoundPlayedRef.current = false;
   }, []);
 
   const handleCardClick = useCallback((cardId: number) => {
@@ -73,6 +78,9 @@ export const useMemoryGame = () => {
 
     const card = cards.find((c) => c.id === cardId);
     if (!card || card.isFlipped || card.isMatched) return;
+
+    // Play flip sound
+    playFlipSound();
 
     // Flip the card
     setCards((prev) =>
@@ -93,6 +101,7 @@ export const useMemoryGame = () => {
       if (firstCard && secondCard && firstCard.emoji === secondCard.emoji) {
         // Match found
         setTimeout(() => {
+          playMatchSound();
           setCards((prev) =>
             prev.map((c) =>
               c.id === firstId || c.id === secondId
@@ -107,6 +116,7 @@ export const useMemoryGame = () => {
       } else {
         // No match
         setTimeout(() => {
+          playMismatchSound();
           setCards((prev) =>
             prev.map((c) =>
               c.id === firstId || c.id === secondId
@@ -119,28 +129,32 @@ export const useMemoryGame = () => {
         }, 1000);
       }
     }
-  }, [cards, flippedCards, isProcessing]);
+  }, [cards, flippedCards, isProcessing, playFlipSound, playMatchSound, playMismatchSound]);
 
   // Check for win
   useEffect(() => {
-    if (cards.length > 0 && cards.every((card) => card.isMatched)) {
+    if (cards.length > 0 && cards.every((card) => card.isMatched) && !winSoundPlayedRef.current) {
       const finalScore = Math.max(1000 - moves * 10, 100) + score;
       setScore(finalScore);
       
       if (finalScore > bestScore) {
         setBestScore(finalScore);
-        localStorage.setItem("memoryGameBestScore", finalScore.toString());
+        localStorage.setItem("memoSparkBestScore", finalScore.toString());
         setIsNewBest(true);
       }
       
-      setTimeout(() => setIsWon(true), 500);
+      winSoundPlayedRef.current = true;
+      setTimeout(() => {
+        playWinSound();
+        setIsWon(true);
+      }, 500);
     }
-  }, [cards, moves, score, bestScore]);
+  }, [cards, moves, score, bestScore, playWinSound]);
 
   const shareScore = useCallback(() => {
-    const text = `🧠 Memory Match Score: ${score}!\nMoves: ${moves}\nCan you beat me? 🎮`;
+    const text = `🧠 MemoSpark Score: ${score}!\nMoves: ${moves}\nCan you beat me? 🎮✨`;
     if (navigator.share) {
-      navigator.share({ title: "Memory Match", text });
+      navigator.share({ title: "MemoSpark", text });
     } else {
       navigator.clipboard.writeText(text);
     }

@@ -1,5 +1,6 @@
 import { Trophy, RotateCcw, Clock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo.png";
 
 interface GameHeaderProps {
   score: number;
@@ -12,9 +13,12 @@ const GameHeader = ({ score, moves, bestScore, onRestart }: GameHeaderProps) => 
   return (
     <div className="w-full max-w-md mx-auto mb-6">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-game-pink to-accent bg-clip-text text-transparent">
-          Memory Match
-        </h1>
+        <div className="flex items-center gap-2">
+          <img src={logo} alt="MemoSpark" className="w-10 h-10" />
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-game-pink to-accent bg-clip-text text-transparent">
+            MemoSpark
+          </h1>
+        </div>
         <Button
           onClick={onRestart}
           variant="outline"
