@@ -1,0 +1,9 @@
+{
+  "appId": "app.lovable.cf7374089af04952a5c5e7d43e305689",
+  "appName": "Memory Match",
+  "webDir": "dist",
+  "server": {
+    "url": "https://cf737408-9af0-4952-a5c5-e7d43e305689.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  }
+}

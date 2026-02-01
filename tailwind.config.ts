@@ -47,6 +47,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        game: {
+          pink: "hsl(var(--game-pink))",
+          purple: "hsl(var(--game-purple))",
+          blue: "hsl(var(--game-blue))",
+          cyan: "hsl(var(--game-cyan))",
+          green: "hsl(var(--game-green))",
+          yellow: "hsl(var(--game-yellow))",
+          orange: "hsl(var(--game-orange))",
+          red: "hsl(var(--game-red))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -72,19 +82,47 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "glow-pulse": {
-          "0%, 100%": { 
-            boxShadow: "0 0 20px hsl(var(--primary) / 0.4), 0 0 40px hsl(var(--primary) / 0.2)" 
-          },
-          "50%": { 
-            boxShadow: "0 0 30px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--primary) / 0.3)" 
-          },
+        "card-flip": {
+          "0%": { transform: "rotateY(0deg)" },
+          "100%": { transform: "rotateY(180deg)" },
+        },
+        "card-flip-back": {
+          "0%": { transform: "rotateY(180deg)" },
+          "100%": { transform: "rotateY(0deg)" },
+        },
+        "bounce-in": {
+          "0%": { transform: "scale(0)", opacity: "0" },
+          "50%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        "shake": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "25%": { transform: "translateX(-5px)" },
+          "75%": { transform: "translateX(5px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 20px hsl(var(--primary) / 0.3)" },
+          "50%": { boxShadow: "0 0 40px hsl(var(--primary) / 0.6)" },
+        },
+        "confetti": {
+          "0%": { transform: "translateY(0) rotate(0deg)", opacity: "1" },
+          "100%": { transform: "translateY(-100px) rotate(720deg)", opacity: "0" },
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        "card-flip": "card-flip 0.4s ease-in-out forwards",
+        "card-flip-back": "card-flip-back 0.4s ease-in-out forwards",
+        "bounce-in": "bounce-in 0.5s ease-out",
+        "shake": "shake 0.5s ease-in-out",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "confetti": "confetti 1s ease-out forwards",
+        "float": "float 3s ease-in-out infinite",
       },
     },
   },
