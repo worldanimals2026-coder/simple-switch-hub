@@ -74,7 +74,20 @@ const defaultSettings: GameSettings = {
   totalCoins: 0,
 };
 
-const GameSettingsContext = createContext<GameSettingsContextType | undefined>(undefined);
+// Create context with default value to prevent errors during HMR
+const defaultContextValue: GameSettingsContextType = {
+  settings: defaultSettings,
+  toggleSound: () => {},
+  toggleTimerMode: () => {},
+  setTimerDuration: () => {},
+  setTheme: () => {},
+  unlockTheme: () => false,
+  addCoins: () => {},
+  getCurrentThemePack: () => THEME_PACKS[0],
+  getThemePacks: () => THEME_PACKS,
+};
+
+const GameSettingsContext = createContext<GameSettingsContextType>(defaultContextValue);
 
 export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
   const [settings, setSettings] = useState<GameSettings>(() => {
@@ -157,9 +170,5 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useGameSettings = () => {
-  const context = useContext(GameSettingsContext);
-  if (!context) {
-    throw new Error("useGameSettings must be used within a GameSettingsProvider");
-  }
-  return context;
+  return useContext(GameSettingsContext);
 };
