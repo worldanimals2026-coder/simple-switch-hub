@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface GameCardProps {
   emoji: string;
@@ -6,37 +7,47 @@ interface GameCardProps {
   isMatched: boolean;
   onClick: () => void;
   colorClass: string;
+  index?: number;
 }
 
-const GameCard = ({ emoji, isFlipped, isMatched, onClick, colorClass }: GameCardProps) => {
+const GameCard = ({ emoji, isFlipped, isMatched, onClick, colorClass, index = 0 }: GameCardProps) => {
   return (
-    <div
-      className="perspective-1000 cursor-pointer touch-manipulation"
+    <motion.div
+      className="cursor-pointer touch-manipulation"
+      style={{ perspective: 800 }}
       onClick={onClick}
+      initial={{ opacity: 0, scale: 0, rotateZ: -15 }}
+      animate={{ opacity: 1, scale: 1, rotateZ: 0 }}
+      transition={{
+        delay: index * 0.04,
+        type: "spring",
+        stiffness: 300,
+        damping: 20,
+      }}
+      whileTap={{ scale: 0.9 }}
     >
-      <div
-        className={cn(
-          "relative w-full aspect-square transition-transform duration-500 transform-style-preserve-3d",
-          isFlipped && "rotate-y-180",
-          isMatched && "animate-bounce-in"
-        )}
-        style={{
-          transformStyle: "preserve-3d",
-          transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
-        }}
+      <motion.div
+        className="relative w-full aspect-square"
+        style={{ transformStyle: "preserve-3d" }}
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.5, type: "spring", stiffness: 300, damping: 25 }}
       >
         {/* Card Back */}
         <div
           className={cn(
-            "absolute inset-0 rounded-xl flex items-center justify-center backface-hidden",
+            "absolute inset-0 rounded-xl flex items-center justify-center",
             "bg-gradient-to-br from-primary via-game-pink to-accent",
             "shadow-lg active:shadow-md transition-shadow duration-300",
-            "border-2 border-white/30",
-            !isFlipped && "animate-float"
+            "border-2 border-white/20"
           )}
           style={{ backfaceVisibility: "hidden" }}
         >
-          <span className="text-2xl sm:text-3xl md:text-4xl select-none">❓</span>
+          <motion.div
+            className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/10 to-transparent"
+            animate={{ opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <span className="text-2xl sm:text-3xl md:text-4xl select-none relative z-10">❓</span>
         </div>
 
         {/* Card Front */}
@@ -52,10 +63,24 @@ const GameCard = ({ emoji, isFlipped, isMatched, onClick, colorClass }: GameCard
             transform: "rotateY(180deg)",
           }}
         >
-          <span className="text-2xl sm:text-3xl md:text-4xl select-none">{emoji}</span>
+          {isMatched && (
+            <motion.div
+              className="absolute inset-0 rounded-xl bg-game-green/10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.3, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+          )}
+          <motion.span
+            className="text-2xl sm:text-3xl md:text-4xl select-none"
+            animate={isMatched ? { scale: [1, 1.2, 1] } : {}}
+            transition={{ duration: 0.4 }}
+          >
+            {emoji}
+          </motion.span>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
