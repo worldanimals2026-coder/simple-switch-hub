@@ -19,7 +19,7 @@ const floatingParticle = (i: number) => ({
     duration: 3 + i * 0.5,
     repeat: Infinity,
     delay: i * 0.7,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
   },
 });
 
